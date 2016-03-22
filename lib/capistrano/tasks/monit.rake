@@ -31,10 +31,13 @@ namespace :monit do
   def all_processes_do(cmd)
     on roles :app do
       output = capture :sudo, :monit, :status
-      processes = output.lines.grep(/^Process '/).grep(/#{fetch(:application)}/)
+      filter = fetch(:monit_services)
+      processes = output.lines.grep(/^Process '/)
+      puts filter
       processes.each do |process|
         process_name = process.split(/\s+/).last.delete "'"
-        monit_do cmd, process_name
+        puts process_name
+        # monit_do cmd, process_name
       end
     end
   end
