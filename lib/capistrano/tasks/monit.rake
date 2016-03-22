@@ -35,9 +35,8 @@ namespace :monit do
       processes = output.lines.grep(/^Process '/)
       puts filter
       processes.each do |process|
-        process_name = process.split(/\s+/).last.delete "'"
-        puts process_name
-        # monit_do cmd, process_name
+        process_name = process.split(/\s+/).last.delete "'"      
+        monit_do cmd, process_name if filter.include?(process_name)
       end
     end
   end
